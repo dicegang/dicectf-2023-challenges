@@ -1,0 +1,23 @@
+name: bop
+author: kfb
+flag:
+  file: bin/flag.txt
+sortWeight: 100
+description: |-
+  `{{ nc }}`
+provide:
+  - bin/Dockerfile
+  - bin/bop
+containers:
+  main:
+    replicas: 2
+    build: bin
+    ports:
+      - 5000
+    securityContext:
+      privileged: true
+expose:
+  main:
+    - target: 5000
+      tcp: 30284
+      healthContent: bop

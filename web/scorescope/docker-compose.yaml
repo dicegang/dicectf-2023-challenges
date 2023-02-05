@@ -1,0 +1,12 @@
+version: '3.8'
+networks:
+  grader: {}
+services:
+  grader:
+    build: ./grader
+    networks: [grader]
+    privileged: true
+  server:
+    build: ./server
+    ports: [3000:3000]
+    networks: [grader]

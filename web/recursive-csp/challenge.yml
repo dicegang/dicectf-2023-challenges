@@ -1,0 +1,25 @@
+name: recursive-csp
+author: strellic
+description: |-
+  the nonce isn't random, so how hard could this be?
+
+  (the flag is in the admin bot's cookie)
+
+  {{ link }}
+
+  [Admin Bot]({{ adminbot }})
+flag:
+  file: ./flag.txt
+sortWeight: 100
+containers:
+  main:
+    replicas: 2
+    build: challenge
+    ports:
+      - 80
+expose:
+  main:
+    - target: 80
+      http: recursive-csp
+      healthContent: recursive-csp
+adminbot: adminbot.js

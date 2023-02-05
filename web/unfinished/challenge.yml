@@ -1,0 +1,38 @@
+name: unfinished
+author: strellic
+description: |-
+  It's the day of the CTF and I haven't finished writing this challenge...
+
+  Well, unfinished doesn't mean unsolvable.
+
+  [Instancer]({{ instancer }})
+
+flag: dice{i_lied_this_1s_th3_finished_st4te}
+sortWeight: 60
+provide:
+  - unfinished.tar.gz
+
+containers:
+  app:
+    build: ./challenge/app/
+    ports:
+      - 4444
+  mongodb:
+    build: ./challenge/mongo/
+    ports:
+      - 27017
+    environment:
+      FLAG: dice{i_lied_this_1s_th3_finished_st4te}
+    resources:
+      limits:
+        memory: 300Mi
+        cpu: 200m
+      requests:
+        memory: 100Mi
+        cpu: 50m
+expose:
+  app:
+    - target: 4444
+      http: unfinished
+instancer:
+  timeout: 600000

@@ -1,0 +1,14 @@
+name: not-baby-parallelism
+author: jyu
+description: |-
+  According to my timing experiments, sequential is still empirically faster. So being a CTF exercise is just about the only use for this now.
+  
+  Run with `pppp -n [number of threads] -i [input file] -o [output file]`
+
+flag:
+  file: flag.txt
+sortWeight: 90
+
+provide:
+  - handout/pppp
+  - handout/flag.out

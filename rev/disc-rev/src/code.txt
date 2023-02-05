@@ -1,0 +1,1186 @@
+.start:
+    pushs "gimme something:"
+    puts
+    
+    gets
+    spawn load_dict, 1
+
+    dup
+    type
+    pushc 0
+    equals
+    jtrue start_flag_bad
+
+    pushc 0
+    getarr
+    swap 1, 2
+    drop
+
+    spawn build_magic, 0
+
+    spawn check, 2
+.force_break:
+    jfalse start_flag_bad
+.start_flag_ok:
+    pushs "\nCorrect :)\nSurround your flag with dice{}"
+    jump start_done
+.start_flag_bad:
+    pushs "\nIncorrect :("
+.start_done:
+    puts
+    retv
+
+; --------------
+
+; {"secr3t_c0d3": 1337, }
+;
+; mem[0]: object
+; mem[1]: flag
+; mem[5]: magic_ref
+.check:
+    pushc 5
+    store
+
+    pushc 0
+    store
+
+    ; check if it is a dict
+    pushc 0
+    load
+    type
+    pushc 5
+    equals
+    jfalse check_bad
+
+    pushs "\n(1) could be interesting..."
+    puts
+
+    ; check secret code
+    pushc 0
+    load
+    pushs "secr3t_c0d3"
+    hasdict
+    jfalse check_bad
+
+    pushc 0
+    load
+    pushs "secr3t_c0d3"
+    getdict
+    pushc 1337
+    equals
+    jfalse check_bad
+
+.check2:
+    pushs "\n(2) hmm..."
+    puts
+
+    ; pull out the flag string
+    pushc 0
+    load
+    pushs "flag"
+    hasdict
+    jfalse check_bad
+
+    pushc 0
+    load
+    pushs "flag"
+    getdict
+
+    ; check if it is a string
+    dup
+    type
+    pushc 3
+    equals
+    jfalse check_bad
+
+    ; store in mem[1]
+    pushc 1
+    store
+
+    ; notify
+    pushs "\n(3) checking flag:"
+    puts
+    pushc 1
+    load
+    puts
+
+.check3:
+    ; find magic dict
+    pushc 0
+    load
+    pushs "magic"
+    hasdict
+    jfalse check_bad
+
+    pushc 0
+    load
+    pushs "magic"
+    getdict
+
+    ; check if it is a dict
+    dup
+    type
+    pushc 5
+    equals
+    jfalse check_bad
+
+    ; store in mem[2]
+    pushc 2
+    store
+
+    pushs "\n(4) validating magic..."
+    puts
+
+    ; clear the memory
+    pushc 0
+    pushc 3
+    store
+.check4_loop:
+    pushc 3
+    load
+    pushc 127
+    lt
+    jtrue check4_loop_done
+
+    false
+    pushc 3
+    load
+    pushc 128
+    add
+    store
+
+    pushc 3
+    load
+    pushc 1
+    add
+    pushc 3
+    store
+    jump check4_loop
+
+.check4_loop_done:
+    ; iterate through magic and verify
+    pushc 2
+    load
+    keys
+    pushc 4
+    store
+
+    pushc 0
+    pushc 3
+    store
+.check5_loop:
+    pushc 4
+    load
+    len
+    pushc 3
+    load
+    lt
+    jfalse check5_loop_done
+
+    ; verify and write to mem
+    pushc 4
+    load
+    pushc 3
+    load
+    getarr
+    
+    pushc 6
+    store
+
+    ; check size
+    pushc 6
+    load
+    len
+    pushc 1
+    equals
+    jfalse check_bad_magic_size
+
+    ; get value
+    pushc 2
+    load
+    pushc 6
+    load
+    getdict
+    pushc 7
+    store
+
+    ; check value type
+    pushc 7
+    load
+    type
+    pushc 2
+    equals
+    jfalse check_bad_magic_type
+
+    ; validate magic
+    pushc 1
+    load
+    pushc 6
+    load
+    pushc 7
+    load
+    spawn validate_magic, 3
+    jfalse check_bad_magic_validate
+
+    ; write validated number
+    pushc 7
+    load
+    pushc 6
+    load
+    value
+    pushc 128
+    add
+    store
+
+    pushc 3
+    load
+    pushc 1
+    add
+    pushc 3
+    store
+    jump check5_loop
+
+.check5_loop_done:
+    ; now loop and check ref
+
+    pushc 0
+    pushc 3
+    store
+.check6_loop:
+    pushc 3
+    load
+    pushc 127
+    lt
+    jtrue check6_loop_done
+
+    ; load magic -> 8
+    pushc 5
+    load
+    pushc 3
+    load
+    getarr
+    pushc 8
+    store
+
+    pushc 8
+    load
+    type
+    pushc 2
+    equals
+    jfalse check6_skip
+
+    ; get mem -> 9
+    pushc 3
+    load
+    pushc 128
+    add
+    load
+    pushc 9
+    store 
+
+    pushc 9
+    load
+    type
+    pushc 2
+    equals
+    jfalse check_bad_magic_missing
+
+    pushc 9
+    load
+    pushc 8
+    load
+    equals
+    jfalse check_bad_magic_wrong
+
+.check6_skip:
+    pushc 3
+    load
+    pushc 1
+    add
+    pushc 3
+    store
+    jump check6_loop
+
+.check6_loop_done:
+
+.check_flag_size:
+    pushc 1
+    load
+    len
+    pushc 57
+    equals
+    jfalse check_bad
+
+.check_good:
+    true
+    ret
+
+.check_bad_magic_size:
+    pushs "bad magic size"
+    puts
+    jump check_bad
+
+.check_bad_magic_type:
+    pushs "bad magic type"
+    puts
+    jump check_bad
+
+.check_bad_magic_validate:
+    pushs "magic did not validate"
+    puts
+    jump check_bad
+
+.check_bad_magic_missing:
+    pushs "missing magic"
+    puts
+    jump check_bad
+
+.check_bad_magic_wrong:
+    pushs "wrong magic"
+    puts
+    jump check_bad
+
+.check_bad:
+    false
+    ret
+
+; --------------
+
+; mem[0]: flag
+; mem[1]: char
+; mem[2]: number
+; mem[3]: sum
+; mem[4]: idx
+; mem[5]: len
+.validate_magic:
+    pushc 2
+    store
+
+    pushc 1
+    store
+
+    pushc 0
+    store
+
+    pushc 0
+    pushc 3
+    store
+
+    pushc 0
+    pushc 4
+    store
+
+    pushc 0
+    load
+    len
+    pushc 5
+    store
+
+.validate_magic_loop:
+    pushc 5
+    load
+    pushc 4
+    load
+    lt
+    jfalse validate_magic_done
+
+    ; check if this idx matches char
+    pushc 0
+    load
+    pushc 4
+    load
+    pushc 1
+    substr
+    pushc 1
+    load
+    equals
+    jfalse validate_not_found
+
+    ; update sum
+    pushc 3
+    load
+    pushc 101
+    mul
+    pushc 4
+    load
+    pushc 1
+    add
+    add
+    pushc 3
+    store
+
+.validate_not_found:
+
+    pushc 4
+    load
+    pushc 1
+    add
+    pushc 4
+    store
+    jump validate_magic_loop
+
+.validate_magic_done:
+    pushc 2
+    load
+    pushc 3
+    load
+    equals
+
+    ret
+
+
+; --------------
+
+; mem[0]: idx
+.build_magic:
+    mkarr 128
+
+    pushc 0
+    pushc 0
+    store
+.build_magic_loop:
+    pushc 0
+    load
+    pushc 127
+    lt
+    jtrue build_magic_loop_done
+
+    false
+    pushc 0
+    load
+    setarr
+
+    pushc 0
+    load
+    pushc 1
+    add
+    pushc 0
+    store
+    jump build_magic_loop
+
+.build_magic_loop_done:
+
+    pushc 319496
+    pushc 46
+    setarr
+        
+    pushc 2184867
+    pushc 48
+    setarr
+        
+    pushc 21925933
+    pushc 49
+    setarr
+
+    pushc 422628
+    pushc 50
+    setarr
+        
+    pushc 14733726
+    pushc 51
+    setarr
+        
+    pushc 555
+    pushc 52
+    setarr
+        
+    pushc 4695
+    pushc 54
+    setarr
+        
+    pushc 320588772
+    pushc 95
+    setarr
+        
+    pushc 4798
+    pushc 97
+    setarr
+        
+    pushc 3775
+    pushc 98
+    setarr
+        
+    pushc 1163
+    pushc 99
+    setarr
+        
+    pushc 1349
+    pushc 100
+    setarr
+        
+    pushc 2565
+    pushc 101
+    setarr
+        
+    pushc 4295
+    pushc 102
+    setarr
+        
+    pushc 2044
+    pushc 108
+    setarr
+        
+    pushc 433
+    pushc 109
+    setarr
+        
+    pushc 660
+    pushc 110
+    setarr
+        
+    pushc 964
+    pushc 111
+    setarr
+        
+    pushc 1066
+    pushc 112
+    setarr
+        
+    pushc 11733
+    pushc 115
+    setarr
+        
+    pushc 226772
+    pushc 116
+    setarr
+        
+    pushc 764
+    pushc 121
+    setarr
+
+    ret
+
+; --------------
+
+; 1 argument: string
+; [0]: string
+; [1]: first char
+.load_object:
+    pushc 0
+    store
+
+    pushc 0
+    load
+
+    pushc 0
+    pushc 1
+    substr
+    pushc 1
+    store
+
+    pushc 1
+    load
+    pushs "{"
+    equals
+    jtrue load_object_dict
+
+    pushc 1
+    load
+    pushs "["
+    equals
+    jtrue load_object_array
+
+    pushc 1
+    load
+    pushs "\""
+    equals
+    jtrue load_object_string
+
+    jump load_object_int
+
+.load_object_dict:
+    pushc 0
+    load
+    spawn load_dict, 1
+    ret
+
+.load_object_array:
+    pushc 0
+    load
+    spawn load_array, 1
+    ret
+
+.load_object_string:
+    pushc 0
+    load
+    spawn load_string, 1
+    ret
+
+.load_object_int:
+    pushc 0
+    load
+    spawn load_int, 1
+    ret
+
+
+; 1 argument: pointer to curr string
+; returns [dict, size]
+
+; [0]: current dict
+; [1]: parse idx
+; [2]: string
+.load_dict:
+    ; s = arg[0]
+    pushc 2
+    store
+
+    ; d = {}
+    mkdict
+    pushc 0
+    store
+
+    ; idx = 0
+    pushc 0
+    pushc 1
+    store
+
+    ; Ensure starts with bracket
+    pushc 2
+    load
+    pushc 0
+    pushc 1
+    substr
+    pushs "{"
+    equals
+    jfalse load_dict_invalid
+
+    ; Update pointer
+    ; idx += 1
+    pushc 1
+    load
+    pushc 1
+    add
+    pushc 1
+    store
+
+.load_dict_loop:
+    ; if matches "}", cleanup
+    pushc 2
+    load
+    pushc 1
+    load
+    pushc 1
+
+    substr
+
+    pushs "}"
+    equals
+    jtrue load_dict_finish
+
+    ; start = idx
+    pushc 1
+    load
+    pushc 3
+    store
+
+.load_dict_name_scan:
+    ; if matches ":", got name
+    pushc 2
+    load
+    pushc 1
+    load
+    pushc 1
+
+    substr
+
+    pushs ":"
+    equals
+    jtrue load_dict_got_name
+
+    ; otherwise increment and loop
+    pushc 1
+    load
+    pushc 1
+    add
+    pushc 1
+    store
+    jump load_dict_name_scan
+
+.load_dict_got_name:
+    ; get name
+    pushc 2
+    load
+
+    ; start
+    pushc 3
+    load
+
+    ; idx - start
+    pushc 1
+    load
+    pushc 3
+    load
+    swap 1, 2
+    sub
+
+    substr
+    
+    ; mem[4]: key
+    pushc 4
+    store
+
+    ; idx += 1
+    pushc 1
+    load
+    pushc 1
+    add
+    pushc 1
+    store
+
+    ; Get remaining part of string
+    pushc 2
+    load
+
+    pushc 1
+    load
+
+    pushc 2
+    load
+    len
+    pushc 1
+    load
+    swap 1,2
+    sub
+
+    substr
+
+    spawn load_object, 1
+
+.load_dict_set_val:
+    pushc 1
+    getarr
+
+    pushc 1
+    load
+    add
+    pushc 1
+    store
+
+    pushc 0
+    getarr
+    pushc 7
+    store
+
+    drop
+
+    ; mem[4]: key
+    ; mem[7]: value
+    pushc 0
+    load
+
+    pushc 7
+    load
+
+    pushc 4
+    load
+
+    setdict
+    drop
+
+.load_dict_match_separator:
+    ; get next char
+    pushc 2
+    load
+    pushc 1
+    load
+    pushc 1
+    substr
+    pushc 8
+    store
+
+    pushc 8
+    load
+    pushs "}"
+    equals
+    jtrue load_dict_finish
+
+    pushc 8
+    load
+    pushs ","
+    equals
+    jfalse load_dict_invalid
+
+    ; Update pointer
+    ; idx += 1
+    pushc 1
+    load
+    pushc 1
+    add
+    pushc 1
+    store
+
+    ; loopback
+    jump load_dict_loop
+
+.load_dict_finish:
+    ; we hit the end marker, done now
+    pushc 1
+    load
+    pushc 1
+    add
+    pushc 1
+    store
+
+    jump load_dict_done
+
+.load_dict_invalid:
+    pushs "parse error"
+    puts
+    retv
+
+.load_dict_done:
+    mkarr 2
+
+    pushc 0
+    load
+    pushc 0
+    setarr
+
+    pushc 1
+    load
+    pushc 1
+    setarr
+
+    ret
+
+; --------------
+
+; mem[0]: array
+; mem[1]: idx
+; mem[2]: string
+
+.load_array:
+    pushc 2
+    store
+
+    mkarr 0
+    pushc 0
+    store
+
+    pushc 0
+    pushc 1
+    store
+
+    ; match first part
+    pushc 2
+    load
+    pushc 0
+    pushc 1
+    substr
+    pushs "["
+    equals
+    jfalse load_array_bad
+
+    pushc 1
+    load
+    pushc 1
+    add
+    pushc 1
+    store
+
+.load_array_loop:
+    ; check if we hit the end
+    pushc 2
+    load
+    pushc 1
+    load
+    pushc 1
+    substr
+    pushs "]"
+    equals
+    jtrue load_array_finish
+
+    ; Get remaining part
+    pushc 2
+    load
+
+    pushc 1
+    load
+
+    pushc 2
+    load
+    len
+    pushc 1
+    load
+    swap 1,2
+    sub
+
+    substr
+
+    spawn load_object, 1
+
+.load_array_append:
+    pushc 1
+    getarr
+
+    pushc 1
+    load
+    add
+    pushc 1
+    store
+
+    pushc 0
+    getarr
+    pushc 3
+    store
+
+    drop
+
+    ; mem[3]: value
+    pushc 0
+    load
+
+    pushc 3
+    load
+
+    append
+    drop
+
+.load_array_match_separator:
+    ; get next char
+    pushc 2
+    load
+    pushc 1
+    load
+    pushc 1
+    substr
+    pushc 4
+    store
+
+    pushc 4
+    load
+    pushs "]"
+    equals
+    jtrue load_array_finish
+
+    pushc 4
+    load
+    pushs ","
+    equals
+    jfalse load_array_bad
+
+    ; Update pointer
+    ; idx += 1
+    pushc 1
+    load
+    pushc 1
+    add
+    pushc 1
+    store
+
+    ; loopback
+    jump load_array_loop
+
+.load_array_finish:
+    pushc 1
+    load
+    pushc 1
+    add
+    pushc 1
+    store
+
+    jump load_array_done
+
+.load_array_bad:
+    pushs "Parse error: expected \"[\""
+    puts
+    retv
+
+.load_array_done:
+    mkarr 2
+
+    pushc 0
+    load
+    pushc 0
+    setarr
+
+    pushc 1
+    load
+    pushc 1
+    setarr
+
+    ret
+
+; ---------------
+
+; mem[1]: idx
+; mem[2]: input
+.load_string:
+    ; s = arg[0]
+    pushc 2
+    store
+
+    ; idx = 0
+    pushc 0
+    pushc 1
+    store
+
+    ; Ensure starts with quote
+    pushc 2
+    load
+    pushc 0
+    pushc 1
+    substr
+    pushs "\""
+    equals
+    jfalse load_string_invalid
+
+    ; Update pointer
+    ; idx += 1
+    pushc 1
+    load
+    pushc 1
+    add
+    pushc 1
+    store
+
+.load_string_loop:
+    ; if matches "\"", got string
+    pushc 2
+    load
+    pushc 1
+    load
+    pushc 1
+
+    substr
+
+    pushs "\""
+    equals
+    jtrue load_string_finish
+
+    ; otherwise increment and loop
+    pushc 1
+    load
+    pushc 1
+    add
+    pushc 1
+    store
+    jump load_string_loop
+
+.load_string_invalid:
+    pushs "parse error: invalid string"
+    puts
+    retv
+
+.load_string_finish:
+    pushc 1
+    load
+    pushc 1
+    add
+    pushc 1
+    store
+
+    ; get contained part
+    pushc 2
+    load
+
+    pushc 1
+
+    pushc 1
+    load
+    pushc 2
+    swap 1, 2
+    sub
+
+    substr
+    pushc 3
+    store
+
+.load_string_done:
+    mkarr 2
+
+    pushc 3
+    load
+    pushc 0
+    setarr
+
+    pushc 1
+    load
+    pushc 1
+    setarr
+
+    ret
+
+; ------------------
+
+; mem[1]: idx
+; mem[2]: input
+.load_int:
+    ; s = arg[0]
+    pushc 2
+    store
+
+    ; idx = 0
+    pushc 0
+    pushc 1
+    store
+
+    ; val = 0
+    pushc 0
+    pushc 0
+    store
+
+.load_int_loop:
+    pushc 2
+    load
+    pushc 1
+    load
+    pushc 1
+
+    substr
+    value
+    pushc 48
+    swap 1,2
+    sub
+    pushc 3
+    store
+    ; mem[3] = value
+
+    ; check range
+    ; if less than 0
+    pushc 0
+    pushc 3
+    load
+    lt
+    jtrue load_int_finish
+
+    pushc 3
+    load
+    pushc 9
+    lt
+    jtrue load_int_finish
+
+    ; update value
+    pushc 0
+    load
+    pushc 10
+    mul
+    pushc 3
+    load
+    add
+    pushc 0
+    store
+
+    ; otherwise increment and loop
+    pushc 1
+    load
+    pushc 1
+    add
+    pushc 1
+    store
+    jump load_int_loop
+
+.load_int_finish:
+    mkarr 2
+
+    pushc 0
+    load
+    pushc 0
+    setarr
+
+    pushc 1
+    load
+    pushc 1
+    setarr
+
+    ret

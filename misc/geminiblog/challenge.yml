@@ -1,0 +1,24 @@
+name: geminiblog
+author: arxenix
+description: |-
+  I wrote my own client and server for the gemini protocol. Come try it out!
+
+  [Instancer]({{ instancer }})
+
+flag:
+  file: challenge/app/flag.txt
+sortWeight: 40
+provide:
+  - handout.tar.gz
+
+containers:
+  app:
+    build: challenge/app
+    ports:
+      - 1337
+expose:
+  app:
+    - target: 1337
+      tls: geminiblog
+instancer:
+  timeout: 600000

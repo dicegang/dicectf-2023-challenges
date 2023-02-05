@@ -1,0 +1,14 @@
+name: raspberry
+author: hgarrereyn
+description: |-
+  ChatGPT is overrated
+
+  _(Dockerfile is provided just as an example)_
+flag:
+  file: flag.txt
+sortWeight: 50
+
+provide:
+  - handout/berry.rasp
+  - handout/run.py
+  - handout/Dockerfile

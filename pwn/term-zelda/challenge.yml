@@ -1,0 +1,33 @@
+name: zelda
+author: pepsipu
+description: |-
+  try out my cool new zelda game!!
+
+  `socat file:$(tty),raw,echo=0 tcp:{{ host }}:{{ port }}`
+provide:
+  - file: bin/term-zelda
+    as: zelda
+flag:
+  file: ./bin/flag.txt
+sortWeight: 30
+
+containers:
+  main:
+    replicas: 2
+    build: .
+    ports:
+      - 5000
+    securityContext:
+      privileged: true
+    resources:
+      requests:
+        cpu: 200m
+        memory: 50Mi
+      limits:
+        cpu: 1000m
+        memory: 150Mi
+
+expose:
+  main:
+    - target: 5000
+      tcp: 31869

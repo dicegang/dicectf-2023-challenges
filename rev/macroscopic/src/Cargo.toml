@@ -1,0 +1,7 @@
+[package]
+name = "macroscopic"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+dice_macro = { version = "0.1.0", path = "dice_macro" }

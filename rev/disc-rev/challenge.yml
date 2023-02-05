@@ -1,0 +1,13 @@
+name: disc-rev
+author: hgarrereyn
+description: |-
+  DISC: _Diced Instruction Set Computer_
+
+  Why use few opcodes when many can do?
+flag:
+  file: flag.txt
+sortWeight: 40
+
+provide:
+  - handout/disc
+  - handout/rom.dat

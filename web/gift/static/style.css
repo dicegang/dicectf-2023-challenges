@@ -1,0 +1,42 @@
+html, body {
+    height: 100%;
+}
+
+body {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    width: 90%;
+    max-width: 900px;
+    margin: auto;
+    font-family:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        'Segoe UI',
+        Roboto,
+        'Helvetica Neue',
+        sans-serif
+    ;
+}
+
+header {
+    margin-bottom: 1rem;
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+input:not([type='submit']) {
+    width: 100%;
+    padding: 8px;
+    margin: 8px 0;
+}
+
+footer {
+    margin-top: auto;
+}

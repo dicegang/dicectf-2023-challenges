@@ -1,0 +1,31 @@
+name: Provably Secure 2
+author: jyu
+description: |-
+  Now with less cheese! Still pretty simple though.
+
+  `{{ nc }}`
+flag:
+  file: flag.txt
+sortWeight: 99
+provide:
+  - server.py
+containers:
+  main:
+    replicas: 2
+    build: .
+    ports:
+      - 5000
+    securityContext:
+      privileged: true
+    resources:
+      requests:
+        cpu: 200m
+        memory: 200M
+      limits:
+        cpu: 2000m
+        memory: 500M
+expose:
+  main:
+    - target: 5000
+      tcp: 31497
+      healthContent: Actions

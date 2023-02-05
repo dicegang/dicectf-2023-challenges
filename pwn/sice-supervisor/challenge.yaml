@@ -1,0 +1,22 @@
+name: Sice Supervisor
+author: poortho & triacontakai
+flag:
+  file: flag.txt
+sortWeight: 60
+description: |-
+  `{{ nc }}`
+provide:
+  - sice-supervisor.zip
+containers:
+  main:
+    replicas: 2
+    build: .
+    ports:
+      - 5000
+    securityContext:
+      privileged: true
+expose:
+  main:
+    - target: 5000
+      tcp: 30283
+      healthContent: Sice Supervisor

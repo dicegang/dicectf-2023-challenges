@@ -1,0 +1,39 @@
+name: mlog
+author: jim & asphyxia
+description: |-
+  The future of log lines is here! Get your ML infused log lines and never
+  worry about missing information in your logs.
+
+  `{{ nc }}`
+
+  **NOTE:** this challenge uses a heavy PoW because unfortunately OpenAI is
+  expensive. Please use your own OpenAI API key to test; then once you are
+  confident, try against the remote server.
+
+  **Quickstart:** install [poetry](https://python-poetry.org/docs/#installation),
+  then run `poetry install` and `OPENAI_KEY=<your key here> poetry run mlog`.
+
+flag: dice{y0U_Ju5t_G0tTa_AsK_Nic3ly}
+sortWeight: 80
+provide:
+  - ./mlog.tar.gz
+containers:
+  main:
+    build:
+      context: chall
+      args:
+        OPENAI_KEY: sk-***
+    replicas: 2
+    ports:
+      - 5000
+    environment:
+      JAIL_ENV_FLAG: dice{y0U_Ju5t_G0tTa_AsK_Nic3ly}
+      JAIL_POW: '20000' # ~10s?
+      JAIL_TIME: '90'
+    securityContext:
+      privileged: true
+expose:
+  main:
+  - target: 5000
+    tcp: 31215
+    healthContent: 'proof of work:'

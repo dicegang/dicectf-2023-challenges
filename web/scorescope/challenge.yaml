@@ -1,0 +1,33 @@
+name: scorescope
+author: BrownieInMotion
+description: |-
+  I'm really struggling in this class. Care to give me a hand?
+
+  {{ link }}
+flag:
+  file: flag.txt
+sortWeight: 90
+containers:
+  main:
+    build: ./server
+    ports:
+      - 3000
+  grader:
+    replicas: 2
+    build: ./grader
+    ports:
+      - 5000
+    securityContext:
+      privileged: true
+    resources:
+      limits:
+        cpu: 400m
+        memory: 200Mi
+      requests:
+        cpu: 100m
+        memory: 50Mi
+expose:
+  main:
+    - target: 3000
+      http: scorescope
+      healthContent: scorescope

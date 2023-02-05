@@ -1,0 +1,41 @@
+name: disc-pwn
+author: hgarrereyn
+flag: dice{big_sh3llc0de_b1g}
+sortWeight: 50
+description: |-
+  DISC: _Diced Instruction Set Computer_
+
+  Now pwn it!
+
+  `{{ nc }}`
+
+  _(this is the same binary as rev/disc-rev, you may want to try that first)_
+
+  _note: remote flag will be the same size as template flag in binary_
+provide:
+  - handout/disc
+  - handout/rom.dat
+  - challenge/Dockerfile
+
+containers:
+  main:
+    replicas: 2
+    build: challenge
+    environment:
+      JAIL_ENV_FLAG: dice{big_sh3llc0de_b1g}
+    ports:
+      - 5000
+    securityContext:
+      privileged: true
+    resources:
+      limits:
+        memory: 500M
+        cpu: 1000m
+      requests:
+        memory: 200M
+        cpu: 100m
+expose:
+  main:
+    - target: 5000
+      tcp: 30911
+      healthContent: gimme something

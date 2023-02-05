@@ -1,0 +1,33 @@
+name: seaside
+author: defund
+description: |-
+  You've heard of being caught between a rock and a hard place, but what about the land and sea? Try to break this oblivious transfer protocol.
+
+  `{{ nc }}`
+provide:
+  - file: server.py
+    as: seaside.py
+  - csidh-latest.tar.xz
+flag:
+  file: flag.txt
+sortWeight: 50
+containers:
+  main:
+    replicas: 2
+    build: .
+    ports:
+      - 5000
+    securityContext:
+      privileged: true
+    resources:
+      requests:
+        cpu: 100m
+        memory: 200M
+      limits:
+        cpu: 1000m
+        memory: 500M
+expose:
+  main:
+    - target: 5000
+      tcp: 31336
+      healthContent: pub0

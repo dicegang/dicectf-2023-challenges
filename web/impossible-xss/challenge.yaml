@@ -1,0 +1,26 @@
+name: impossible-xss
+author: arxenix
+description: |-
+  GET YOUR FREE XSS HERE!
+
+  {{ link }}
+
+  [Admin Bot]({{ adminbot }})
+flag:
+  file: flag.txt
+sortWeight: 40
+provide:
+  - app.js
+  - adminbot-handout.js
+containers:
+  main:
+    replicas: 2
+    build: .
+    ports:
+      - 8080
+expose:
+  main:
+    - target: 8080
+      http: impossible-xss
+      healthContent: impossible-xss
+adminbot: adminbot.js

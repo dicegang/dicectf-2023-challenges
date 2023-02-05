@@ -1,0 +1,5 @@
+.vscode
+node_modules/
+challenge/jnotes/target/*
+!challenge/jnotes/target/app.jar
+.editorconfig

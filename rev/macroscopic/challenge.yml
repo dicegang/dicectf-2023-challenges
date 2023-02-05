@@ -1,0 +1,11 @@
+name: macroscopic
+author: clubby789
+description: |-
+  Rust reversing, but even more "fun!"  
+
+flag:
+  dice{ru57_r3v3r51ng_w1th_4_m4cr0_tw15t}
+sortWeight: 60
+
+provide:
+  - macroscopic.tar.gz

@@ -1,0 +1,26 @@
+name: jnotes
+author: arxenix
+description: |-
+  I made this note site before I learned about XSS... can you break it?
+
+  Thankfully my cookies are HttpOnly
+
+  {{ link }}
+
+  [Admin Bot]({{ adminbot }})
+flag:
+  file: flag.txt
+sortWeight: 50
+provide:
+  - handout.tar
+containers:
+  main:
+    build: challenge
+    ports:
+      - 1337
+expose:
+  main:
+    - target: 1337
+      http: jnotes
+      healthContent: jnotes
+adminbot: adminbot.js

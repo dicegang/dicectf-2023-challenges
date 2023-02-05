@@ -1,0 +1,30 @@
+name: OtterWorld
+author: NotDeGhost
+flag: dice{0tt3r_w0r1d_8c01j3}
+sortWeight: 80
+description: |-
+  Otter World!
+
+  [Instancer]({{ instancer }})
+provide:
+  - otterworld.tar
+containers:
+  main:
+    build: challenge
+    environment:
+      FLAG: dice{0tt3r_w0r1d_8c01j3}
+    ports:
+      - 8080
+    resources:
+      limits:
+        memory: 500M
+        cpu: 1000m
+      requests:
+        memory: 200M
+        cpu: 100m
+expose:
+  main:
+    - target: 8080
+      tls: otterworld
+instancer:
+  timeout: 600000

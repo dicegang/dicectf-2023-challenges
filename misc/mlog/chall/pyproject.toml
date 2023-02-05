@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "mlog"
+version = "0.1.0"
+description = "ML-powered log formatter"
+authors = ["DiceGang <team@dicega.ng>"]
+
+[tool.poetry.scripts]
+mlog = 'mlog.__main__:cli'
+
+[tool.poetry.dependencies]
+python = "^3.10"
+rich = "^13.3.1"
+openai = "^0.26.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

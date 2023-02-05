@@ -1,0 +1,33 @@
+name: dicer-visor
+author: SmoothHacker
+description: |-
+  Welcome to DiceGang's newest hypervisor-based security solution, Dicer-Visor.
+
+  `{{ nc }}`
+provide:
+  - challenge/initramfs.cpio.gz
+  - challenge/dicer-visor
+  - challenge/bzImage
+flag:
+  file: challenge/flag.txt
+sortWeight: 40
+containers:
+  main:
+    replicas: 2
+    build: challenge
+    ports:
+      - 5000
+    securityContext:
+      privileged: true
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+      requests:
+        cpu: 1000m
+        memory: 300Mi
+expose:
+  main:
+    - target: 5000
+      tcp: 31313
+      healthContent: url for initramfs.cpio.gz

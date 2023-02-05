@@ -1,0 +1,24 @@
+name: gift
+author: BrownieInMotion
+description: |-
+  Send money to all your friends! Can you get enough balance to see `/flag`?
+
+  {{ link }}
+
+  [Admin Bot]({{ adminbot }})
+flag:
+  file: flag.txt
+sortWeight: 70
+provide:
+  - source/index.js
+containers:
+  main:
+    build: .
+    ports:
+      - 3000
+expose:
+  main:
+    - target: 3000
+      http: gift
+      healthContent: gift
+adminbot: adminbot.js

@@ -1,0 +1,9 @@
+name: super qomputer
+author: ireland
+description: |-
+  Just run the program and it prints the flag: assuming you have a quantum computer available
+flag:
+  file: flag.txt
+sortWeight: 70
+provide:
+  - challenge.7z

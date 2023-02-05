@@ -1,0 +1,25 @@
+name: Prison Reform
+author: kmh
+description: |-
+  Due to unprecedented levels of contrivedness, I am calling for the CTF community to abolish private pyjails. But first, try this one.
+
+  `{{ nc }}`
+flag:
+  file: ./deploy/flag.txt
+sortWeight: 50
+provide:
+- ./deploy/prison.py
+- ./deploy/Dockerfile
+containers:
+  main:
+    build: deploy
+    replicas: 2
+    ports:
+      - 5000
+    securityContext:
+      privileged: true
+expose:
+  main:
+  - target: 5000
+    tcp: 31773
+    healthContent: '> '

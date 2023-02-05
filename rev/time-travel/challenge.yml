@@ -1,0 +1,12 @@
+name: time-travel
+author: infuzion
+description: |-
+  This flag calculator has been running for a while...
+
+flag:
+  file: flag.txt
+sortWeight: 100
+
+provide:
+  - handout/time_travel
+  - handout/input.bin

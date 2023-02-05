@@ -1,0 +1,35 @@
+name: vinaigrette
+author: defund
+description: |-
+  Welcome to Dice Bistro, where every bite is an adventure in flavor. Our secret vinaigrette recipe is closely guarded, ensuring that its tantalizing taste remains a mystery to all but the most skilled cryptographers.
+
+  `{{ nc }}`
+provide:
+  - file: server.py
+    as: vinaigrette.py
+  - pk.bin
+  - pqov-paper.tar.gz
+  - patch.diff
+flag:
+  file: flag.txt
+sortWeight: 40
+containers:
+  main:
+    replicas: 2
+    build: .
+    ports:
+      - 5000
+    securityContext:
+      privileged: true
+    resources:
+      requests:
+        cpu: 100m
+        memory: 200M
+      limits:
+        cpu: 1000m
+        memory: 500M
+expose:
+  main:
+    - target: 5000
+      tcp: 31337
+      healthContent: Welcome to Dice Bistro.

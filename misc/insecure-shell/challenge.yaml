@@ -1,0 +1,15 @@
+name: insecure-shell
+author: kfb
+description: |-
+  Someone told me entropy never goes down... but I just got rid of so much of it!
+
+  Here, you might need [this](https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-8.9p1.tar.gz). 
+
+  Oh, and we're all on Ubuntu 22.04, just in case it matters. 
+
+flag: dice{predictably_unpredictable_7e9570670175ea2e}
+sortWeight: 60
+provide:
+  - capture.pcap
+  - patch
+  - ssh

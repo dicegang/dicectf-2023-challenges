@@ -1,0 +1,7 @@
+author: defund
+description: |-
+  Join us at [discord.gg/dicectf](https://discord.com/invite/dicectf) and read the `#rules` channel to get the flag!
+flag: dice{2023}
+sortWeight: 100
+value: 1
+tiebreakEligible: false

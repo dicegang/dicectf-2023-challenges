@@ -1,0 +1,6 @@
+#!/bin/sh
+
+set -eu
+printf 'url for initramfs.cpio.gz (limit 10M): '
+curl -fsSLo /tmp/initramfs.cpio.gz -m 10 -- "$(head -n1)"
+./dicer-visor bzImage /tmp/initramfs.cpio.gz

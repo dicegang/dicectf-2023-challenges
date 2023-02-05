@@ -1,0 +1,29 @@
+name: rSabin
+author: ireland
+description: |-
+  As [baby RSA showed](https://ctftime.org/writeup/32264), `nth_root` is pretty useful and definitely always fast.
+
+  `{{ nc }}`
+flag:
+  file: flag.txt
+sortWeight: 80
+provide:
+  - challenge.py
+containers:
+  main:
+    replicas: 2
+    build: .
+    ports:
+      - 5000
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 300Mi
+      requests:
+        cpu: 200m
+        memory: 300Mi
+expose:
+  main:
+    - target: 5000
+      tcp: 31370
+      healthContent: Enter your option

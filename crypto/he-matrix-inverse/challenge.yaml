@@ -1,0 +1,32 @@
+name: inversion
+author: ireland
+description: |-
+  With fully homomorphic encryption, you can add and multiply encrypted values. These arithmetic circuits are Turing complete, so surely a little linear algebra will be child's play!
+
+  `{{ nc }}`
+flag:
+  file: flag.txt
+sortWeight: 60
+provide:
+  - generate.py
+  - server.py
+  - url: https://static.dicega.ng/uploads/1155f6ae61808fd32d1885b608762a9e0d93ccacdf9f05466e681fb48e12e92e/data.zip
+containers:
+  main:
+    build: .
+    ports:
+      - 5000
+    securityContext:
+      privileged: true
+    resources:
+      requests:
+        cpu: 500m
+        memory: 3G
+      limits:
+        cpu: 2000m
+        memory: 6G
+expose:
+  main:
+    - target: 5000
+      tcp: 30917
+      healthContent: proof of work

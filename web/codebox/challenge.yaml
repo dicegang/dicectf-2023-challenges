@@ -1,0 +1,25 @@
+name: codebox
+author: EhhThing
+description: |-
+  strellic makes csp challs, maybe i should try one sometime
+
+  {{ link }}
+
+  [Admin Bot]({{ adminbot }})
+flag:
+  file: challenge/flag.txt
+sortWeight: 80
+provide:
+  - codebox.tar.gz
+containers:
+  main:
+    replicas: 2
+    build: challenge
+    ports:
+      - 8080
+expose:
+  main:
+    - target: 8080
+      http: codebox
+      healthContent: codebox
+adminbot: adminbot.js

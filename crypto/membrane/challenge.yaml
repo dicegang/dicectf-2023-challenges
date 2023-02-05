@@ -1,0 +1,10 @@
+name: membrane
+author: ireland
+description: |-
+  Hope you enjoyed the CryptoHack LWE series!
+flag:
+  file: flag.txt
+sortWeight: 70
+provide:
+  - generate.sage
+  - data.npz

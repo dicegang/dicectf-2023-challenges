@@ -1,0 +1,27 @@
+name: Pike
+author: clubby789
+description: |-
+  Surely this time, my calculator app will be safe!
+
+  After starting the instance, use `socat tcp-listen:1337,fork,reuseaddr openssl:<ip>:<port>`  to create an SSL proxy to the server - socat >=1.7.4.0 is required.
+  
+  [Instancer](https://instancer.mc.ax/challenge/pike)
+
+flag:
+  file: server/flag.txt
+sortWeight: 70
+containers:
+  app:
+    build: server
+    ports:
+      - 9999
+expose:
+  app:
+    - target: 9999
+      tls: pike
+instancer:
+  timeout: 600000
+
+provide:
+  - server/Dockerfile
+  - server/server.py

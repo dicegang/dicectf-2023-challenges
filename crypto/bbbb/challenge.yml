@@ -1,0 +1,33 @@
+name: BBBB
+author: willwam
+description: |-
+  i prefer LCGs over QCGs to be honest...
+
+  based off [BBB](https://ctftime.org/task/23982) from SECCON CTF 2022
+
+  `{{ nc }}`
+flag:
+  file: flag.txt
+sortWeight: 90
+provide:
+  - bbbb.py
+containers:
+  main:
+    replicas: 2
+    build: .
+    ports:
+      - 5000
+    securityContext:
+      privileged: true
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 200Mi
+      requests:
+        cpu: 200m
+        memory: 100Mi
+expose:
+  main:
+    - target: 5000
+      tcp: 31340
+      healthContent: "[+] The parameters"

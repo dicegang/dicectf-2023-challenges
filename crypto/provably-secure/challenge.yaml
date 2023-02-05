@@ -1,0 +1,31 @@
+name: Provably Secure
+author: jyu
+description: |-
+  I proved this cryptographic combiner to be super secure (specifically IND-CCA2) on my graduate cryptography final exam, but just to be safe, I'm making you break it with both primitives being computationally secure!
+
+  `{{ nc }}`
+flag:
+  file: flag.txt
+sortWeight: 100
+provide:
+  - server.py
+containers:
+  main:
+    replicas: 2
+    build: .
+    ports:
+      - 5000
+    securityContext:
+      privileged: true
+    resources:
+      requests:
+        cpu: 200m
+        memory: 200M
+      limits:
+        cpu: 2000m
+        memory: 500M
+expose:
+  main:
+    - target: 5000
+      tcp: 31493
+      healthContent: Actions

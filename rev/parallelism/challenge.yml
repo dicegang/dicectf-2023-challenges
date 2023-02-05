@@ -1,0 +1,13 @@
+name: parallelism
+author: infuzion
+description: |-
+  High performance computing is cool and all, but high performance flag checking is where it's at. 
+  
+  Run with `mpirun --oversubscribe -np 8 ./parallelism`
+
+flag:
+  file: flag.txt
+sortWeight: 80
+
+provide:
+  - handout/parallelism

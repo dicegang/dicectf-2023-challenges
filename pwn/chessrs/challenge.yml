@@ -1,0 +1,28 @@
+name: chess.rs
+author: strellic
+description: |-
+  🚀 blazingfast rust wasm chess 🚀
+
+  (the flag is in the admin bot's cookie)
+
+  {{ link }}
+
+  [Admin Bot]({{ adminbot }})
+flag:
+  file: ./flag.txt
+sortWeight: 70
+provide:
+  - chessrs.tar.gz
+  - adminbot-test.js
+containers:
+  main:
+    replicas: 2
+    build: challenge
+    ports:
+      - 1337
+expose:
+  main:
+    - target: 1337
+      http: chessrs
+      healthContent: chess
+adminbot: adminbot.js

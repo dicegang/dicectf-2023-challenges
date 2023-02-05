@@ -1,0 +1,150 @@
+:root {
+    --green: #007d08;
+    --medium-green: #007d08dd;
+    --light-green: #007d0833;
+    --gray: #f9f9f9;
+    --red: #d40b2c;
+}
+
+html, body {
+    margin: 0;
+    height: 100%;
+}
+
+h1 {
+    font-family: 'Lexend Deca', sans-serif;
+    margin: 0;
+}
+
+h2 {
+    font-family: 'Lexend Deca', sans-serif;
+    margin: 0;
+    font-weight: 400;
+}
+
+main {
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+        "header header"
+        "assignment results"
+        "submission results"
+    ;
+    height: 100vh;
+}
+
+header {
+    background-color: var(--gray);
+    padding: 1rem;
+    border-bottom: 1px solid #dddddd;
+    grid-area: header;
+}
+
+main section {
+    padding: 2rem;
+    font-family: 'Noto Sans', sans-serif;
+    border: 1px solid #dddddd;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.assignment { grid-area: assignment; }
+.results { grid-area: results; }
+.submission { grid-area: submission; }
+
+.results { overflow: auto; }
+
+.logo { vertical-align: middle; }
+
+.green { color: var(--green); }
+
+.button {
+    display: block;
+    border: 1px solid var(--green);
+    border-radius: 2px;
+    text-decoration: none;
+    color: var(--green);
+}
+
+button {
+    background-color: var(--green);
+    margin-left: auto;
+    color: white;
+    border: 1px solid var(--green);
+    border-radius: 2px;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.button, button {
+    padding: 0.5rem 1rem;
+    width: fit-content;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.button:hover {
+    background-color: var(--light-green);
+}
+
+button:hover {
+    background-color: var(--medium-green);
+    border: 1px solid var(--medium-green);
+}
+
+.drag {
+    border-style: dashed;
+    border-radius: 3px;
+    border-width: 1px;
+    border-color: #dddddd;
+    background-color: var(--gray);
+    text-align: center;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+}
+
+.expand {
+    flex-grow: 1;
+}
+
+.file {
+    text-decoration: underline;
+}
+
+.file:hover {
+    color: var(--red);
+    cursor: pointer;
+}
+
+.output {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+pre { margin: 0; }
+
+.case {
+    border-radius: 2px;
+    border: 1px solid #dddddd;
+    padding: 0rem;
+}
+
+.case-header {
+    padding: 1rem;
+    background-color: var(--gray);
+    font-weight: 500;
+}
+
+.case-message {
+    padding: 1rem;
+    border-top: 1px solid #dddddd;
+    overflow-x: auto;
+}
+
+.case-success .case-header { color: var(--green); }
+.case-failure .case-header { color: var(--red); }
+.case-error .case-header { color: var(--red); }

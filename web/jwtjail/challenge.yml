@@ -1,0 +1,26 @@
+name: jwtjail
+author: strellic
+description: |-
+  A simple tool to verify your JWTs!
+
+  Oh, that CVE? Don't worry, we're running the latest version.
+
+  [Instancer]({{ instancer }})
+
+flag:
+  file: challenge/flag.txt
+sortWeight: 30
+provide:
+  - jwtjail.tar.gz
+
+containers:
+  app:
+    build: challenge
+    ports:
+      - 12345
+expose:
+  app:
+    - target: 12345
+      http: jwtjail
+instancer:
+  timeout: 600000
